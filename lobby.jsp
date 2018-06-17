@@ -26,6 +26,16 @@
 								<img src="image/video.png" height="24" width="24">上課影片<span class="sr-only">(current)</span>
 							</a>
 						</li>
+						<li class="nav-item">  
+							<a class="nav-link active" href="#">
+								<img src="image/practice.jpg" height="24" width="24">練習題目<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link active" href="#">
+								<img src="image/exam.png" height="24" width="24">考試題目<span class="sr-only">(current)</span>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</nav>
@@ -35,8 +45,7 @@
 					<h1 class="h2">Dashboard</h1>
 					<div class="btn-toolbar mb-2 mb-md-0">
 						<div class="btn-group mr-2">
-							<button class="btn btn-sm btn-outline-secondary">Share</button>
-							<button class="btn btn-sm btn-outline-secondary">Export</button>
+							<button class="btn btn-sm btn-outline-secondary" id="setting" hidden>設定</button>
 						</div>
 						<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -51,6 +60,19 @@
 </body>
 </html>
 <script type="text/javascript">
-
+	if(getCookie('identity') == "teacher"){
+		$("#setting").attr('hidden',false);
+	}
+	function getCookie(cname) {
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1);
+			if (c.indexOf(name) == 0)
+				return c.substring(name.length, c.length);
+		}
+		return "";
+	}
 
 </script>

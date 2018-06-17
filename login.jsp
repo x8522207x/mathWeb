@@ -82,6 +82,7 @@
 			}
 		});
 		if(redirect === true){
+			setCookie('identity','student', 30);
 			$(location).attr('href','http://localhost:8080/math/lobby.jsp')
 		}
 	})
@@ -105,9 +106,17 @@
 			}
 		});
 		if(redirect === true){
+			setCookie('identity','teacher', 30);
 			$(location).attr('href','http://localhost:8080/math/lobby.jsp')
 		}
 	})
+	function setCookie(cname, cvalue, exdays) {
+		var d = new Date();
+		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+		var expires = "expires=" + d.toUTCString();
+		document.cookie = cname + "=" + cvalue + ";path=" + location.host + "; " + expires;
+	}
+
 </script>
 <style>
 body {
