@@ -14,6 +14,7 @@
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
+		<h4 id="user" style="position:absolute;right:80px;"></h4>
 		<a class="btn btn-outline-primary" href="login.jsp"  style="position:absolute;right:10px;">登出</a>
 	</nav>
 	<div class="container-fluid">
@@ -63,6 +64,7 @@
 	if(getCookie('identity') == "teacher"){
 		$("#setting").attr('hidden',false);
 	}
+	$("#user").text(getCookie('user'));
 	function getCookie(cname) {
 		var name = cname + "=";
 		var ca = document.cookie.split(';');

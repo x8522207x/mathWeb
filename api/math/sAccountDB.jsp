@@ -40,21 +40,27 @@ if(register.equals("true")){
 	}
 }else if(sLogIn.equals("true")){
 	String password	= request.getParameter("password");
-	String data[][]=a.getData("SELECT  `account`,`password` FROM `student-account`");
+	String data[][]=a.getData("SELECT  `account`,`password`,`name` FROM `student-account`");
 	a.closeConnection();
+	boolean alive = false;
 	if(data != null){
 		for(int i=0;i<data.length;i++){
 			if(account.equals(data[i][0])){
 				if(password.equals(data[i][1])){
-					response.getWriter().print("true");
+					String userInfo = "true;"+data[i][2];
+					response.getWriter().print(userInfo);
+					alive = true;
 					break;
 				}else{
 					response.getWriter().print("pfalse");
+					alive = true;
 					break;
 				}
 			}
 		}
-		response.getWriter().print("afalse");
+		if(alive == false){
+			response.getWriter().print("afalse");
+		}
 	}else{
 		response.getWriter().print("afalse");
 	}

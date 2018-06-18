@@ -63,6 +63,7 @@
 	}
 	$("#sLogin").click(function(){
 		var redirect = false;
+		var user = "";
 		$.ajax({
 			url: 'api/math/sAccountDB.jsp',
 			type: 'POST',
@@ -74,6 +75,7 @@
 			},
 		}).done(function (data){
 			if(data.includes("true") === true){
+				user = data.split(";")[1];
 				redirect = true;
 			}else if(data.includes("pfalse") === true){
 				alert("密碼輸入錯誤");
@@ -83,6 +85,7 @@
 		});
 		if(redirect === true){
 			setCookie('identity','student', 30);
+			setCookie('user',user, 30);
 			$(location).attr('href','http://localhost:8080/math/lobby.jsp')
 		}
 	})
