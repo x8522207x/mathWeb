@@ -13,8 +13,11 @@
 	<body>
 		<div class="container">
 			<br>
-			<label>第幾單元</label> 
-			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾單元" >
+			<label>第幾章</label> 
+			<input type="number" pattern="[0-9.]"  id="part-chapter" placeholder="第幾章" >
+			<br>
+			<label>第幾節</label> 
+			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾節" >
 			<br>
 			<label>題目</label> 
 			<input type="text" id="question" placeholder="題目" >
@@ -28,21 +31,23 @@
 	</body>
 	<script>
 		$("#submit").click(function(){
-			if($("#part-number").val() === "" || $("#question").val() === "" || $("#answer").val() === "" ){
+			if($("#part-number").val() === "" || $("#question").val() === ""|| $("#part-chapter").val() === "" || $("#answer").val() === "" ){
 				alert("有欄位沒填");
 			}
-			if($("#part-number").val() !== "" && $("#question").val() !== "" && $("#answer").val() !== "" ){
+			if($("#part-number").val() !== ""&& $("#part-chapter").val() !== "" && $("#question").val() !== "" && $("#answer").val() !== "" ){
 				$.ajax({
-					url: 'api/math/practiceQAdd.jsp',
+					url: 'api/math/practiceAction.jsp',
 					type: 'POST',
 					async: false,
 					data: {
+						"add"		 : "true",
+						"partChapter"  : $("#part-chapter").val(),
 						"partNumber"  : $("#part-number").val(),
 						"question"	: $("#question").val(),
 						"answer"	: $("#answer").val(),
 					},
-				}).done(function (data){
-					window.opener.practiceQ();
+				}).done(function (){
+					window.opener.location.reload();
 					self.close();
 				});
 			}

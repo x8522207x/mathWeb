@@ -14,10 +14,10 @@
 		<div class="container">
 			<br>
 			<label>第幾章</label> 
-			<input type="number" pattern="[0-9.]"  id="part-chapter" placeholder="第幾章" >
+			<input type="number" pattern="[0-9.]"  id="part-chapter" placeholder="第幾章" disabled>
 			<br>
 			<label>第幾節</label> 
-			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾節" >
+			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾節" disabled>
 			<br>
 			<label>單元名稱</label> 
 			<input type="text" id="part-name" placeholder="單元名稱" >
@@ -30,29 +30,39 @@
 		</div>
 	</body>
 	<script>
-		$("#submit").click(function(){
-			if($("#part-number").val() === "" || $("#part-name").val() === ""|| $("#part-chapter").val() === "" || $("#video").val() === "" ){
-				alert("有欄位沒填");
+		$("#part-chapter")[0].value = getCookie('partChapter');
+		$("#part-number")[0].value = getCookie('partNumber');
+		$("#part-name")[0].value = getCookie('partName');
+		$("#video")[0].value = getCookie('video');
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1);
+				if (c.indexOf(name) == 0)
+					return c.substring(name.length, c.length);
 			}
-			if($("#part-number").val() !== "" && $("#part-chapter").val() !== ""&& $("#part-name").val() !== "" && $("#video").val() !== "" ){
-				$.ajax({
-					url: 'api/math/videoAction.jsp',
-					type: 'POST',
-					async: false,
-					data: {
-						"add"         :   "true",
-						"partChapter"  : $("#part-chapter").val(),
-						"partNumber"  : $("#part-number").val(),
-						"partName"	: $("#part-name").val(),
-						"video"	: $("#video").val(),
-					},
-				}).done(function (){
-					window.opener.location.reload();
-					self.close();
-				});
-			}
+			return "";
+		}
+		$("#submit").click(function(){			
+			$.ajax({
+				url: 'api/math/videoAction.jsp',
+				type: 'POST',
+				async: false,
+				data: {
+					"editUpdate"	: "true",
+					"partChapter"   : $("#part-chapter")[0].value,
+					"partNumber"	: $("#part-number")[0].value,
+					"partName"	: $("#part-name")[0].value,
+					"video"	: $("#video")[0].value,
+				},
+			}).done(function (data){
+				window.opener.location.reload();
+				self.close();
+			});
 		});
-		$("#cancel").click(function(){
+		$("#cancel").click(function(){			
 			self.close();
 		});
 	</script>
