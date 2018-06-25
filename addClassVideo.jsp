@@ -30,7 +30,7 @@
 		</div>
 	</body>
 	<script>
-		$("#submit").click(function(){
+		$("#submit").click(function(e){
 			if($("#part-number").val() === "" || $("#part-name").val() === ""|| $("#part-chapter").val() === "" || $("#video").val() === "" ){
 				alert("有欄位沒填");
 			}
@@ -47,7 +47,9 @@
 						"video"	: $("#video").val(),
 					},
 				}).done(function (){
-					window.opener.location.reload();
+					e.preventDefault();
+					window.opener.location.reload(true);
+					window.opener.location="javascript:classVideo();";
 					self.close();
 				});
 			}

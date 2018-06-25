@@ -12,9 +12,18 @@ String add = (request.getParameter("add") == null)? "" :request.getParameter("ad
 DBText a = new DBText();
 a.connection();
 if(watch.equals("true")){	
-	String b[][] =a.getData("SELECT `partName`, `video` FROM `classvideo` WHERE `partNumber`='"+partNumber+"'");
+	ArrayList<String>question = new ArrayList<String>();
+	ArrayList<String>answer = new ArrayList<String>();
+	String partChapter	= request.getParameter("partChapter");
+	String b[][] =a.getData("SELECT `question`, `answer` FROM `practiceq` WHERE `partNumber`='"+partNumber+"' and `partChapter`= '"+partChapter+"'");
+	
 	if(b != null){
-		response.getWriter().print(b[0][0]+","+b[0][1]);
+		for(int i=0;i<b.length;i++){
+			
+			question.add(b[i][0]);
+			answer.add(b[i][1]);
+		}
+		response.getWriter().print(question+"="+answer);
 	}
 }else if(delete.equals("true")){
 	a.updateData("DELETE FROM `practiceq` WHERE `partNumber` = '"+partNumber+"'");

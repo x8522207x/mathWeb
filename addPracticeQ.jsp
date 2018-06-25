@@ -30,7 +30,7 @@
 		</div>
 	</body>
 	<script>
-		$("#submit").click(function(){
+		$("#submit").click(function(e){
 			if($("#part-number").val() === "" || $("#question").val() === ""|| $("#part-chapter").val() === "" || $("#answer").val() === "" ){
 				alert("有欄位沒填");
 			}
@@ -47,7 +47,9 @@
 						"answer"	: $("#answer").val(),
 					},
 				}).done(function (){
+					e.preventDefault();
 					window.opener.location.reload();
+					//window.opener.location="javascript:practiceQ();";
 					self.close();
 				});
 			}

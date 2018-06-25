@@ -5,6 +5,8 @@
 <%@ page import ="java.util.TreeSet"%>
 <html lang="zh-TW">
 	<head>
+		<meta charset="utf-8">
+		<title>微積分教學平台</title>
 		<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="assets/css/style.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -91,7 +93,7 @@
 										columnList.add(key);
 									}
 									for(int i = 0 ; i< columnList.size();i++){
-									%>
+								%>
 									<tr>
 										<td><%=columnList.get(i)%></td>
 										<td>
@@ -515,9 +517,12 @@
 						"partNumber"	: this.id,
 					},
 				}).done(function (data){
-
+					var question = data.trim().split("=")[0];
+					var answer = data.trim().split("=")[1];
+					setCookie('question',question,30);
+					setCookie('answer',answer,30);
 				});
-				window.open('practice.jsp','practice.jsp','width=500,height=500 ');
+				window.open('practice.jsp','practice.jsp','width=1000,height=1000');
 			});
 			$("button[name='delete2-1']").click(function(){			
 				$.ajax({
