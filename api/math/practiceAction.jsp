@@ -19,7 +19,6 @@ if(watch.equals("true")){
 	
 	if(b != null){
 		for(int i=0;i<b.length;i++){
-			
 			question.add(b[i][0]);
 			answer.add(b[i][1]);
 		}

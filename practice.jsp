@@ -27,21 +27,36 @@
 		var h4_2 = document.createElement('h4');
 		var input = document.createElement('input');
 		var button = document.createElement('button');
+		var deleteButton = document.createElement('button');
+		var editButton = document.createElement('button');
 		h4.append(parseInt(i)+1+": "+ question[i]);
 		h4_2.append("答案");
 		h4_2.appendChild(input);
 		input.setAttribute('type','textarea');
 		input.setAttribute('id',i);
 		button.setAttribute('class','btn btn-sm btn-outline-secondary');
-		button.setAttribute('type','button');
+		deleteButton.setAttribute('class','btn btn-sm btn-outline-secondary');
+		editButton.setAttribute('class','btn btn-sm btn-outline-secondary');
 		button.setAttribute('name','submit');
+		deleteButton.setAttribute('name','delete');
+		editButton.setAttribute('name','edit');
+		deleteButton.setAttribute('hidden','hidden');
+		editButton.setAttribute('hidden','hidden');
 		button.setAttribute('id','button'+i);
 		div.appendChild(h4);
 		div.appendChild(h4_2);
 		div.appendChild(input);
 		div.appendChild(button);
+		div.appendChild(deleteButton);
+		div.appendChild(editButton);
 		tbody.appendChild(div);
-		document.getElementsByTagName("button")[i].textContent ="送出";
+		$("button[name='submit']")[i].textContent ="送出";
+		$("button[name='delete']")[i].textContent ="刪除";
+		$("button[name='edit']")[i].textContent ="編輯";
+		if(getCookie('identity') == "teacher"){
+			$(deleteButton).attr('hidden',false);
+			$(editButton).attr('hidden',false);
+		}
 	}
 	$("button[name='submit']").click( function(){
 		var userAnswer = $("#"+this.id.split("button")[1])[0].value;
@@ -50,7 +65,7 @@
 		}else{
 			alert("答錯囉:(");
 		}
-		console.log($("#"+this.id.split("button")[1])[0].value);
+		
 	})
 	function setCookie(cname, cvalue, exdays) {
 		var d = new Date();

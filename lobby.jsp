@@ -357,8 +357,8 @@
 				var td3 = document.createElement('td');
 				var td4 = document.createElement('td');
 				var button = document.createElement('button');
-				var button2 = document.createElement('button');
-				var button3 = document.createElement('button');
+				var deleteButton = document.createElement('button');
+				var editButton = document.createElement('button');
 				var img = document.createElement('img');
 				var img2 = document.createElement('img');
 				var img3 = document.createElement('img');
@@ -373,22 +373,22 @@
 				img3.setAttribute('hight',24);
 				button.setAttribute('class','btn btn-sm btn-outline-secondary');
 				button.setAttribute('class','btn btn-sm btn-outline-secondary');
-				button2.setAttribute('class','btn btn-sm btn-outline-secondary');
+				deleteButton.setAttribute('class','btn btn-sm btn-outline-secondary');
 				button.setAttribute('name','video1-1');
-				button2.setAttribute('name','delete1-1');
-				button3.setAttribute('name','edit1-1');
-				button2.setAttribute('hidden','hidden');
-				button3.setAttribute('hidden','hidden');
+				deleteButton.setAttribute('name','delete1-1');
+				editButton.setAttribute('name','edit1-1');
+				deleteButton.setAttribute('hidden','hidden');
+				editButton.setAttribute('hidden','hidden');
 				button.setAttribute('id',partNumber.split(",")[i]);
-				button2.setAttribute('id',partNumber.split(",")[i]);
-				button3.setAttribute('id',partNumber.split(",")[i]);
+				deleteButton.setAttribute('id',partNumber.split(",")[i]);
+				editButton.setAttribute('id',partNumber.split(",")[i]);
 				button.appendChild(img);
-				button2.appendChild(img2);
-				button3.appendChild(img3);
+				deleteButton.appendChild(img2);
+				editButton.appendChild(img3);
 				td.append(partNumber.split(",")[i]);
 				td2.appendChild(button);
-				td3.appendChild(button2);
-				td4.appendChild(button3);
+				td3.appendChild(deleteButton);
+				td4.appendChild(editButton);
 				td3.setAttribute('hidden','hidden');
 				td4.setAttribute('hidden','hidden');
 				tr.appendChild(td);
@@ -397,8 +397,8 @@
 				tr.appendChild(td4);
 				tbody.appendChild(tr);
 				if(getCookie('identity') == "teacher"){
-					$(button2).attr('hidden',false);
-					$(button3).attr('hidden',false);
+					$(deleteButton).attr('hidden',false);
+					$(editButton).attr('hidden',false);
 					$(td3).attr('hidden',false);
 					$(td4).attr('hidden',false);
 				}
@@ -475,7 +475,7 @@
 				var td2 = document.createElement('td');
 				var td3 = document.createElement('td');
 				var button = document.createElement('button');
-				var button2 = document.createElement('button');
+				var deleteButton = document.createElement('button');
 				var img = document.createElement('img');
 				var img2 = document.createElement('img');
 				img.setAttribute('src','https://use.fontawesome.com/releases/v5.1.0/svgs/solid/bars.svg');
@@ -488,21 +488,21 @@
 				button.setAttribute('name','practice2-1');
 				button.setAttribute('id',partNumber.split(",")[i]);
 				button.appendChild(img);
-				button2.setAttribute('class','btn btn-sm btn-outline-secondary');
-				button2.setAttribute('name','delete2-1');
-				button2.setAttribute('hidden','hidden');
-				button2.setAttribute('id',partNumber.split(",")[i]);
-				button2.appendChild(img2);
+				deleteButton.setAttribute('class','btn btn-sm btn-outline-secondary');
+				deleteButton.setAttribute('name','delete2-1');
+				deleteButton.setAttribute('hidden','hidden');
+				deleteButton.setAttribute('id',partNumber.split(",")[i]);
+				deleteButton.appendChild(img2);
 				td.append(partNumber.split(",")[i]);
 				td2.appendChild(button);
-				td3.appendChild(button2);
+				td3.appendChild(deleteButton);
 				td3.setAttribute('hidden','hidden');
 				tr.appendChild(td);
 				tr.appendChild(td2);
 				tr.appendChild(td3);
 				tbody.appendChild(tr);
 				if(getCookie('identity') == "teacher"){
-					$(button2).attr('hidden',false);
+					$(deleteButton).attr('hidden',false);
 					$(td3).attr('hidden',false);
 				}
 			}
