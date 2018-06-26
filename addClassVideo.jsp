@@ -48,8 +48,7 @@
 					},
 				}).done(function (){
 					e.preventDefault();
-					window.opener.location.reload(true);
-					window.opener.location="javascript:classVideo();";
+					window.opener.location.reload();
 					self.close();
 				});
 			}

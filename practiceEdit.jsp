@@ -14,10 +14,10 @@
 		<div class="container">
 			<br>
 			<label>第幾章</label> 
-			<input type="number" pattern="[0-9.]"  id="part-chapter" placeholder="第幾章" >
+			<input type="number" pattern="[0-9.]"  id="part-chapter" placeholder="第幾章" disabled>
 			<br>
 			<label>第幾節</label> 
-			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾節" >
+			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾節" disabled>
 			<br>
 			<label>題目</label> 
 			<input type="text" id="question" placeholder="題目" >
@@ -30,30 +30,41 @@
 		</div>
 	</body>
 	<script>
-		$("#submit").click(function(e){
-			if($("#part-number").val() === "" || $("#question").val() === ""|| $("#part-chapter").val() === "" || $("#answer").val() === "" ){
-				alert("有欄位沒填");
+		$("#part-chapter")[0].value = getCookie('partChapter');
+		$("#part-number")[0].value = getCookie('partNumber');
+		$("#question")[0].value = getCookie('question');
+		$("#answer")[0].value = getCookie('answer');
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') c = c.substring(1);
+				if (c.indexOf(name) == 0)
+					return c.substring(name.length, c.length);
 			}
-			if($("#part-number").val() !== ""&& $("#part-chapter").val() !== "" && $("#question").val() !== "" && $("#answer").val() !== "" ){
-				$.ajax({
-					url: 'api/math/practiceAction.jsp',
-					type: 'POST',
-					async: false,
-					data: {
-						"add"		 : "true",
-						"partChapter"  : $("#part-chapter").val(),
-						"partNumber"  : $("#part-number").val(),
-						"question"	: $("#question").val(),
-						"answer"	: $("#answer").val(),
-					},
-				}).done(function (){
-					e.preventDefault();
-					window.opener.location.reload();
-					self.close();
-				});
-			}
+			return "";
+		}
+		$("#submit").click(function(){			
+			$.ajax({
+				url: 'api/math/practiceAction.jsp',
+				type: 'POST',
+				async: false,
+				data: {
+					"edit"	: "true",
+					"partChapter"   : $("#part-chapter")[0].value,
+					"partNumber"	: $("#part-number")[0].value,
+					"question"	: $("#question")[0].value,
+					"answer"	: $("#answer")[0].value,
+					"oldQuestion"	: getCookie('question'),
+					"oldAnswer"	: getCookie('answer'),
+				},
+			}).done(function (data){
+				self.close();
+				window.opener.close();
+			});
 		});
-		$("#cancel").click(function(){
+		$("#cancel").click(function(){			
 			self.close();
 		});
 	</script>

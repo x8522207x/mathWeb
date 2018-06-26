@@ -17,8 +17,8 @@
 	</body>
 	<script>
 	
-	var question = getCookie('question').substring(1,getCookie('question').length-1).split(",");
-	var answer = getCookie('answer').substring(1,getCookie('answer').length-1).split(",");
+	var question = getCookie('question').substring(1,getCookie('question').length-1).split(",,,");
+	var answer = getCookie('answer').substring(1,getCookie('answer').length-1).split(",,,");
 
 	var tbody = document.getElementById('practice');
 	for(var i = 0 ; i< question.length ; i++){
@@ -39,7 +39,9 @@
 		editButton.setAttribute('class','btn btn-sm btn-outline-secondary');
 		button.setAttribute('name','submit');
 		deleteButton.setAttribute('name','delete');
+		deleteButton.setAttribute('id','delete'+i);
 		editButton.setAttribute('name','edit');
+		editButton.setAttribute('id','edit'+i);
 		deleteButton.setAttribute('hidden','hidden');
 		editButton.setAttribute('hidden','hidden');
 		button.setAttribute('id','button'+i);
@@ -67,6 +69,29 @@
 		}
 		
 	})
+	$("button[name='delete']").click( function(){
+		$.ajax({
+			url: 'api/math/practiceAction.jsp',
+			type: 'POST',
+			async: false,
+			data: {
+				"deleteUpdate"			: "true",
+				"partChapter"			:getCookie('partChapter'),
+				"partNumber"			:getCookie('partNumber'),
+			},
+		}).done(function (){
+			window.opener.location.reload();
+			self.close();
+		});
+	});
+	$("button[name='edit']").click( function(){
+		id = this.id.split("edit")[1];		
+		setCookie('question',question[id]);
+		setCookie('answer',answer[id]);
+		setCookie('partChapter',getCookie('partChapter'));
+		setCookie('partNumber',getCookie('partNumber'));
+		window.open('practiceEdit.jsp','practiceEdit','width=500,height=500 ');
+	});
 	function setCookie(cname, cvalue, exdays) {
 		var d = new Date();
 		d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

@@ -146,7 +146,6 @@
 									for(int i = 0; i < b2.length; i++){
 										keyList2.add(b2[i][0].split("-")[0]);
 									}
-									a.closeConnection();
 									ArrayList<String> columnList2 = new ArrayList<String>();
 									Set<String> ts2 = new TreeSet<String>();
 									ts2.addAll(keyList2);
@@ -154,7 +153,7 @@
 										columnList2.add(key);
 									}
 									for(int i = 0 ; i< columnList2.size();i++){
-									%>
+								%>
 									<tr>
 										<td><%=columnList2.get(i)%></td>
 										<td>
@@ -163,7 +162,7 @@
 											</button>
 										</td> 
 									</tr>
-									<%
+								<%
 									}
 								}
 								%>
@@ -183,26 +182,47 @@
 					</div>
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 						<h1 class="h2">考試題目</h1>
-						<div class="btn-toolbar mb-2 mb-md-0">
+						<div class="btn-toolbar mb-2 mb-md-0" id="testQuestion" hidden>
 							<div class="btn-group mr-2">
-							<input type="checkbox" id="switch" checked data-toggle="toggle" data-on="開啟" data-off="關閉" data-offstyle="danger" ></input>
+								<input type="checkbox" id="switch" checked data-toggle="toggle" data-on="開啟" data-off="關閉" data-offstyle="danger"></input>
 							</div>
 							<div class="btn-group mr-2">
-								<button class="btn btn-sm btn-outline-secondary" id="add3" hidden>
+								<button class="btn btn-sm btn-outline-secondary" id="add3">
 									<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/plus.svg"  width=24 height=24>
 								新增</button>
 							</div>
-							<div class="btn-group mr-2">
-								<button class="btn btn-sm btn-outline-secondary" id="delete3" hidden>
-									<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/trash-alt.svg" width=24 height=24>
-								刪除</button>
-							</div>
-							<div class="btn-group mr-2">
-								<button class="btn btn-sm btn-outline-secondary" id="edit3" hidden>
-									<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/edit.svg" width=24 height=24>
-								修改</button>
-							</div>
 						</div>
+					</div>
+					<div>
+						<%
+							ArrayList<String> grade = new ArrayList<String>();
+							ArrayList<String> question = new ArrayList<String>();
+							ArrayList<String> answer = new ArrayList<String>();
+							String b3[][] =a.getData("SELECT `grade`,`question`,`answer` FROM `testq`");
+							if(b3 != null){
+								for(int i = 0; i < b3.length; i++){
+									grade.add(b3[i][0]);
+									question.add(b3[i][1]);
+									answer.add(b3[i][2]);
+								}
+								a.closeConnection();
+								for(int i = 0 ; i< grade.size();i++){
+						%>
+						<h5><%=grade.get(i)%>分  題目:<%=question.get(i)%></h5>
+						<input type="textarea" name="test" id="test<%=i%>"></input>
+						<button class="btn btn-sm btn-outline-secondary" name="testDelete" hidden>
+							<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/trash-alt.svg"  width=24 height=24 hidden>
+						刪除</button>
+						<button class="btn btn-sm btn-outline-secondary" name="testEdit"  hidden>
+							<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/edit.svg" width=24 height=24 >
+						修改</button>
+						<%
+								}
+							}
+						%>
+					</div>
+					<div>
+						<button id="testSubmit">送出</button>
 					</div>
 					<canvas class="my-4 chartjs-render-monitor" id="myChart" width="866" height="365" style="display: block; width: 866px; height: 365px;"></canvas>
 				</main>
@@ -245,13 +265,6 @@
 					</div>
 					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 						<h1 class="h2">題目列表</h1>
-						<div class="btn-toolbar mb-2 mb-md-0">
-							<div class="btn-group mr-2">
-								<button class="btn btn-sm btn-outline-secondary" id="edit2-1" hidden>
-									<img src="https://use.fontawesome.com/releases/v5.0.13/svgs/solid/edit.svg" width=24 height=24>
-								修改</button>
-							</div>
-						</div>
 					</div>
 					<div>
 						<table>
@@ -284,20 +297,22 @@
 			$('#switch').change(function() {
 				setCookie('switchCheck',$(this)[0].checked, 30);
 			})
-			if(getCookie('identity') == "teacher"){
+			if(getCookie('identity') === "teacher"){
 				$("#add").attr('hidden',false);
 				$("#delete1-1").attr('hidden',false);
 				$("#edit1-1").attr('hidden',false);
 				$("#add2").attr('hidden',false);
 				$("#delete2-1").attr('hidden',false);
 				$("#edit2-1").attr('hidden',false);
-				$("#add3").attr('hidden',false);
+				$("testEdit").attr('hidden',false);
+				$("testDelete").attr('hidden',false);
 				$("#delete3").attr('hidden',false);
 				$("#edit3").attr('hidden',false);
 				$("#testQ").attr('hidden',false);
 				$("#tableVideoDelete").attr('hidden',false);
 				$("#tableVideoEdit").attr('hidden',false);
 				$("#tableQuestionDelete").attr('hidden',false);
+				$("#testQuestion").attr('hidden',false);
 			}
 			$("#user").text(getCookie('user'));
 		  })
@@ -317,7 +332,6 @@
 			$("#main1-1").attr('hidden',true);
 			$("#main2-1").attr('hidden',true);	
 		}
-
 		function practiceQ(){
 			$("#main1").attr('hidden',true);
 			$("#main2").attr('hidden',false);
@@ -442,8 +456,8 @@
 						"partNumber"	: this.id,
 					},
 				}).done(function(data){
-					setCookie('partName',data.trim().split(",")[0].split(":")[1],30);
-					setCookie('video',data.trim().split(",")[1].split(":")[1],30);
+					setCookie('partName',data.trim().split(",")[0].split("::")[1],30);
+					setCookie('video',data.trim().split(",")[1].split("::")[1],30);
 				});
 				setCookie('partChapter',Chapter,30);
 				setCookie('partNumber',this.id,30);
@@ -506,7 +520,8 @@
 					$(td3).attr('hidden',false);
 				}
 			}
-			$("button[name='practice2-1']").click(function(){			
+			$("button[name='practice2-1']").click(function(){
+				var idNumber = this.id;
 				$.ajax({
 					url: 'api/math/practiceAction.jsp',
 					type: 'POST',
@@ -514,13 +529,15 @@
 					data: {
 						"watch"			: "true",
 						"partChapter"   : Chapter,
-						"partNumber"	: this.id,
+						"partNumber"	: idNumber,
 					},
 				}).done(function (data){
-					var question = data.trim().split("=")[0];
-					var answer = data.trim().split("=")[1];
+					var question = data.trim().split(":::")[0];
+					var answer = data.trim().split(":::")[1];
 					setCookie('question',question,30);
 					setCookie('answer',answer,30);
+					setCookie('partNumber',idNumber,30);
+					setCookie('partChapter',Chapter,30);
 				});
 				window.open('practice.jsp','practice.jsp','width=1000,height=1000');
 			});
@@ -539,6 +556,23 @@
 			});
 		});
 		
+		$("#testSubmit").click(function(){
+			var userAnswer = "";
+			for(var i =0; i < $("input[name='test']").length; i++){
+				userAnswer+=$("input[name='test']")[i].value+",";
+			}
+			$.ajax({
+				url: 'api/math/testAction.jsp',
+				type: 'POST',
+				async: false,
+				data: {
+					"result"  : "true",
+					"userAnswer"	: userAnswer,
+				},
+			}).done(function (data){	
+				alert("恭喜你得分:"+data.trim());
+			});
+		});
 		function getCookie(cname) {
 			var name = cname + "=";
 			var ca = document.cookie.split(';');

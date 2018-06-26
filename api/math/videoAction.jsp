@@ -24,7 +24,7 @@ if(watch.equals("true")){
 	String partChapter = request.getParameter("partChapter");
 	String b[][] =a.getData("SELECT `partName`, `video` FROM `classvideo` WHERE `partNumber`='"+partNumber+"' and `partChapter` = '"+partChapter+"'");
 	if(b != null){
-		response.getWriter().print("partName:"+b[0][0]+",video:"+b[0][1]);
+		response.getWriter().print("partName::"+b[0][0]+",video::"+b[0][1]);
 	}
 }else if(editUpdate.equals("true")){
 	String partChapter = request.getParameter("partChapter");

@@ -13,36 +13,38 @@
 	<body>
 		<div class="container">
 			<br>
-			<label>第幾單元</label> 
-			<input type="number" pattern="[0-9.]"  id="part-number" placeholder="第幾單元" >
-			<br>
 			<label>題目</label> 
-			<input type="text" id="question" placeholder="題目" >
+			<input type="text" id="question" placeholder="題目">
 			<br>
 			<label>答案</label> 
-			<input type="text" id="answer" placeholder="答案" >
+			<input type="text" id="answer" placeholder="答案">
+			<br>
+			<label>分數</label> 
+			<input type="text" id="grade" placeholder="分數">
 			<br>
 			<button type="button" id="submit">確定</button>
 			<button type="button" id="cancel">取消</button>
 		</div>
 	</body>
 	<script>
-		$("#submit").click(function(){
-			if($("#part-number").val() === "" || $("#question").val() === "" || $("#answer").val() === "" ){
+		$("#submit").click(function(e){
+			if( $("#question").val() === "" || $("#answer").val() === "" || $("#grade").val() === "" ){
 				alert("有欄位沒填");
 			}
-			if($("#part-number").val() !== "" && $("#question").val() !== "" && $("#answer").val() !== "" ){
+			if($("#question").val() !== "" && $("#answer").val() !== ""&& $("#grade").val() !== "" ){
 				$.ajax({
-					url: 'api/math/testQAdd.jsp',
+					url: 'api/math/testAction.jsp',
 					type: 'POST',
 					async: false,
 					data: {
-						"partNumber"  : $("#part-number").val(),
+						"add"		: "true",
 						"question"	: $("#question").val(),
 						"answer"	: $("#answer").val(),
+						"grade"	: $("#grade").val(),
 					},
-				}).done(function (data){
-					window.opener.testQ();
+				}).done(function (){
+					e.preventDefault();
+					window.opener.location.reload();
 					self.close();
 				});
 			}
